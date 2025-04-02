@@ -30,12 +30,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/login**", "/error**").permitAll()
-                        .requestMatchers("/api/logout").permitAll() // Allow POST to /api/logout without CSRF
+                        .requestMatchers("/api/logout").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(new OAuth2LoginSuccessHandler(userRepository)))
                 .logout(logout -> logout
-                        .logoutUrl("/api/logout") // Specify logout URL
+                        .logoutUrl("/api/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             System.out.println("Backend logout success handler called");
                             System.out.println("Logout successful from backend");
@@ -45,11 +45,11 @@ public class SecurityConfig {
                             System.out.println("Session ID after invalidation (should be new or invalid): "
                                     + request.getSession().getId());
                         })
-                        .deleteCookies("JSESSIONID") // Delete the session cookie on logout
-                        .clearAuthentication(true) // Clear authentication on logout
-                        .invalidateHttpSession(true) // Invalidate the session on logout
+                        .deleteCookies("JSESSIONID")
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
                 )
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/logout")) // Disable CSRF for /api/logout only
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/logout"))
                 .cors(withDefaults());
 
         return http.build();
