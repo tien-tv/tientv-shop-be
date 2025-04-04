@@ -23,9 +23,8 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @ColumnDefault("1")
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     @OneToMany(mappedBy = "category")
     private Set<com.tientv.model.Product> products = new LinkedHashSet<>();
